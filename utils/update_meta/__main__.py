@@ -14,6 +14,14 @@ class Account:
     desc: str
 
 
+@dataclass
+class Principal:
+    """An item for a [[PRINICPALS]] collection"""
+
+    name: str
+    email: str
+
+
 class PendulumEncoder(toml.encoder.TomlEncoder):
     def __init__(self, _dict=dict, preserve=False):
         super().__init__(_dict=_dict, preserve=preserve)
@@ -51,6 +59,8 @@ our_xca.desc = our_xca.desc.strip()
 parsed_toml["ACCOUNTS"] = [our_xca.__dict__]
 parsed_toml["METADATA"]["modified"] = new_modified
 parsed_toml["METADATA"]["expires"] = new_expiry
+me = Principal("Joseph Chiocchi", "admin@egge.gg")
+parsed_toml["PRINCIPALS"] = [me.__dict__]
 
 
 with open(xrp_ledger_toml, "w") as fp:

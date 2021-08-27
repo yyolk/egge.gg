@@ -1,7 +1,11 @@
 [[ACCOUNTS]]
 address = "rEGGEgg9hQSHLxUwycGnmjW2GKX9thn2yH"
-desc = "🥚🥚/ EGGE.gg"
+desc = "🥚🥚| EGGE.gg | XRPL Price Persist Oracle | https://github.com/yyolk/xrpl-price-persist-oracle"
+
+[[PRINCIPALS]]
+name = "Joseph Chiocchi"
+email = "admin@egge.gg"
 
 [METADATA]
-modified = 2021-08-27T06:41:51.998510Z
-expires = 2023-08-27T06:41:51.998510Z
+modified = 2021-08-27T07:13:47.613710Z
+expires = 2023-08-27T07:13:47.613710Z
