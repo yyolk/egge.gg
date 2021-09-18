@@ -21,6 +21,9 @@
             justify-content: center;
             text-align: center;
         }
+        #priceBox {
+            display: none;
+        }
         #price {
             margin-bottom: 0;
         }
@@ -42,7 +45,7 @@
         </h1>
     </div>
 
-    <div>
+    <div id="priceBox">
         <h5 id="price">$ &hellip; . &hellip;</h5>
         <p>current price</p>
     </div>
@@ -63,17 +66,19 @@
     </div>
 
     <script type="text/javascript">
+        const Connection = new WebSocket("wss://xrplcluster.com")
         const account = 'rEGGEgg9hQSHLxUwycGnmjW2GKX9thn2yH'
-        const priceEl = document.getElementById("price")
+        const priceBoxEl = document.getElementById('priceBox')
+        const priceEl = document.getElementById('price')
 
         Connection.onopen = () => {
+          priceBoxEl.style.display = 'block'
           Connection.send(JSON.stringify({
             command: 'subscribe', accounts: [account]
           }))
 
           Connection.onmessage = m => {
             const response = JSON.parse(m.data)
-            console.log('response is', response)
             if ('transaction' in response) {
                 priceEl.innerText = `$${response.transaction.LimitAmount.value}`
             }
