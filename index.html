@@ -22,7 +22,7 @@
             text-align: center;
         }
         #priceBox {
-            display: none;
+            display: block;
         }
         #price {
             margin-bottom: 0;
@@ -46,7 +46,7 @@
     </div>
 
     <div id="priceBox">
-        <h5 id="price">$ &hellip; . &hellip;</h5>
+        <h5 id="price">listening &hellip;</h5>
         <p>current price</p>
     </div>
 
@@ -80,7 +80,6 @@
             const response = JSON.parse(m.data)
             if ('transaction' in response) {
                 priceEl.innerText = `$${response.transaction.LimitAmount.value}`
-                priceBoxEl.style.display = 'block'
             }
           }
         }
