@@ -47,7 +47,7 @@
 
     <div id="priceBox">
         <h5 id="price">$ &hellip; . &hellip;</h5>
-        <p>subscribed. listening for current price</p>
+        <p>Oracle's Price</p>
     </div>
 
 
@@ -68,18 +68,31 @@
     <script type="text/javascript">
         const Connection = new WebSocket("wss://xrplcluster.com")
         const account = 'rEGGEgg9hQSHLxUwycGnmjW2GKX9thn2yH'
-        const priceBoxEl = document.getElementById('priceBox')
-        const priceEl = document.getElementById('price')
+
+        const setPrice = price => {
+            const priceBoxEl = document.getElementById('priceBox')
+            const priceEl = document.getElementById('price')
+            priceEl.innerText = `$${price}`
+        }
 
         Connection.onopen = () => {
           Connection.send(JSON.stringify({
-            command: 'subscribe', accounts: [account]
+            command: 'account_tx', account, limit: 1
           }))
 
           Connection.onmessage = m => {
             const response = JSON.parse(m.data)
-            if ('transaction' in response) {
-                priceEl.innerText = `$${response.transaction.LimitAmount.value}`
+            if ('transactions' in response.result) {
+                Connection.send(JSON.stringify({
+                  command: 'subscribe', accounts: [account]
+                }))
+                Connection.onmessage = m => {
+                    const response = JSON.parse(m.data)
+                    if ('transaction' in response) {
+                        setPrice(response.transaction.LimitAmount.value)
+                    }
+                }
+                setPrice(response.result.transactions[0].tx.LimitAmount.value)
             }
           }
         }
