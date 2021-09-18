@@ -21,6 +21,13 @@
             justify-content: center;
             text-align: center;
         }
+        #price {
+            margin-bottom: 0;
+        }
+        #price + p {
+            font-size: 1vh;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -34,7 +41,13 @@
             E.gg
         </h1>
     </div>
-    
+
+    <div>
+        <h5 id="price">$ &hellip; . &hellip;</h5>
+        <p>current price</p>
+    </div>
+
+
     <div>
         <!-- 
             metrics are provided by the xrpl-price-perist-oracle-metrics repo
@@ -48,6 +61,25 @@
     <div>
         <a href="https://github.com/yyolk/xrpl-price-persist-oracle">Huh?</a>
     </div>
-    
+
+    <script type="text/javascript">
+        const account = 'rEGGEgg9hQSHLxUwycGnmjW2GKX9thn2yH'
+        const priceEl = document.getElementById("price")
+
+        Connection.onopen = () => {
+          Connection.send(JSON.stringify({
+            command: 'subscribe', accounts: [account]
+          }))
+
+          Connection.onmessage = m => {
+            const response = JSON.parse(m.data)
+            console.log('response is', response)
+            if ('transaction' in response) {
+                priceEl.innerText = `$${response.transaction.LimitAmount.value}`
+            }
+          }
+        }
+    </script>
+
 </body>
 </html>
