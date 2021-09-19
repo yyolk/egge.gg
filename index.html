@@ -31,12 +31,19 @@
             background: transparent;
         }
         #price {
+            color: #eee;
             margin-bottom: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        #price span {
+            color: #000;
+            text-shadow: 0px 1px 2px #111;
         }
         #price + p {
             font-size: .8vw;
-            font-style: italic;
             color: #bbb;
+            user-select: none;
         }
         .highlight {
             animation: highlight 2s;
@@ -91,7 +98,7 @@
         const setPrice = price => {
             const priceBoxEl = document.getElementById('priceBox')
             const priceEl = document.getElementById('price')
-            priceEl.innerText = `$${price}`
+            priceEl.innerHTML = `<span>$${price}</span>`
             priceBoxEl.classList.add('highlight')
             setTimeout(() => priceBoxEl.classList.remove('highlight'), 2000)
         }
