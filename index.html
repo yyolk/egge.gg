@@ -23,6 +23,7 @@
         }
         #priceBox {
             display: block;
+            background: transparent;
         }
         #price {
             margin-bottom: 0;
@@ -30,6 +31,17 @@
         #price + p {
             font-size: 1vh;
             font-style: italic;
+        }
+        .highlight {
+            animation: highlight 2s;
+        }
+        @keyframes highlight {
+            0% {
+                background-color: yellow;
+            }
+            100% {
+                background-color: transparent;
+            }
         }
     </style>
 </head>
@@ -73,6 +85,8 @@
             const priceBoxEl = document.getElementById('priceBox')
             const priceEl = document.getElementById('price')
             priceEl.innerText = `$${price}`
+            priceBoxEl.classList.add('highlight')
+            setTimeout(() => priceBoxEl.classList.remove('highlight'), 2000)
         }
 
         Connection.onopen = () => {
@@ -83,6 +97,9 @@
           Connection.onmessage = m => {
             const response = JSON.parse(m.data)
             if ('transactions' in response.result) {
+                // set the price and then change over to a subscription to the
+                // oracle's transactions
+                setPrice(response.result.transactions[0].tx.LimitAmount.value)
                 Connection.send(JSON.stringify({
                   command: 'subscribe', accounts: [account]
                 }))
@@ -92,7 +109,6 @@
                         setPrice(response.transaction.LimitAmount.value)
                     }
                 }
-                setPrice(response.result.transactions[0].tx.LimitAmount.value)
             }
           }
         }
