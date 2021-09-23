@@ -126,7 +126,7 @@
                   command: 'subscribe', accounts: [account]
                 }))
                 // change over our response handler for incoming messages.
-                // js handles dereferencing ok right :)
+                // hope this doesnt cause memory leaks :P
                 ws.onmessage = m => {
                     const response = JSON.parse(m.data)
                     if ('transaction' in response) {
