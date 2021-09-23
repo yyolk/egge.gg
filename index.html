@@ -56,6 +56,9 @@
                 background-color: transparent;
             }
         }
+        footer {
+            font-size: 3vw;
+        }
     </style>
 </head>
 <body>
@@ -87,12 +90,12 @@
         <img src="https://imgs.egge.gg/7d" alt="price USD PT-7D">
         <img src="https://imgs.egge.gg/30d" alt="price USD PT-30D">
     </div>
-    <div>
+    <footer>
         <a href="https://github.com/yyolk/xrpl-price-persist-oracle">Huh?</a>
-    </div>
+    </footer>
 
     <script type="text/javascript">
-        const Connection = new WebSocket("wss://xrplcluster.com")
+        const ws = new WebSocket("wss://xrplcluster.com")
         const account = 'rEGGEgg9hQSHLxUwycGnmjW2GKX9thn2yH'
 
         const setPrice = price => {
@@ -103,21 +106,24 @@
             setTimeout(() => priceBoxEl.classList.remove('highlight'), 2000)
         }
 
-        Connection.onopen = () => {
-          Connection.send(JSON.stringify({
+        ws.onopen = () => {
+          ws.send(JSON.stringify({
             command: 'account_tx', account, limit: 1
           }))
 
-          Connection.onmessage = m => {
+          ws.onmessage = m => {
             const response = JSON.parse(m.data)
             if ('transactions' in response.result) {
-                // set the price and then change over to a subscription to the
-                // oracle's transactions
+                // set the price
                 setPrice(response.result.transactions[0].tx.LimitAmount.value)
-                Connection.send(JSON.stringify({
+                // change over to a subscription to the oracle's transactions
+                // subscribe to the account
+                ws.send(JSON.stringify({
                   command: 'subscribe', accounts: [account]
                 }))
-                Connection.onmessage = m => {
+                // change over our response handler for incoming messages.
+                // js handles dereferencing ok right :)
+                ws.onmessage = m => {
                     const response = JSON.parse(m.data)
                     if ('transaction' in response) {
                         setPrice(response.transaction.LimitAmount.value)
