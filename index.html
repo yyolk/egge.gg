@@ -62,7 +62,7 @@
     </style>
 </head>
 <body>
-    <div>
+    <header>
         <h1>
         <span style="cursor: pointer;" onclick="location.href='https://explorer.xrplf.org/rEGGEgg9hQSHLxUwycGnmjW2GKX9thn2yH';">
             🥚
@@ -71,12 +71,15 @@
         <p>
             EGGE.gg
         </p>
-    </div>
+        <a href="#main">&darr;</a>
+    </header>
 
-    <div id="priceBox">
-        <h5 id="price">$ &hellip; . &hellip;</h5>
-        <p>Oracle's Price (1 XRP costs this much $USD)</p>
-    </div>
+    <main id="main">
+        <div id="priceBox">
+            <h5 id="price">$ &hellip; . &hellip;</h5>
+            <p>Oracle's Price (1 XRP costs this much $USD)</p>
+        </div>
+    </main>
 
     <hr>
 
@@ -90,6 +93,7 @@
         <img src="https://imgs.egge.gg/7d" alt="price USD PT-7D">
         <img src="https://imgs.egge.gg/30d" alt="price USD PT-30D">
     </div>
+
     <footer>
         <a href="https://github.com/yyolk/xrpl-price-persist-oracle">Huh?</a>
     </footer>
